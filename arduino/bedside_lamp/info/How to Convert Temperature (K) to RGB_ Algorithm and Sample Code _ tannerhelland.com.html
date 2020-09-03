@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<!-- saved from url=(0080)https://tannerhelland.com/2012/09/18/convert-temperature-rgb-algorithm-code.html -->
+<html lang="en"><div id="twoseven-scripts" data-info="Scripts added by TwoSeven extension" style="display: none !important; position: static !important; top: 0px !important; left: 0px !important; width: 0px !important; height: 0px !important;"><script type="text/javascript" id="__tmpScript-851553141" data-added-by-two-seven="1">(function() {
+    window.twoseven = {};
+  })();</script><script type="text/javascript" id="__tmpScript-348724920" data-added-by-two-seven="1">(function() {
+    window.twoseven.waitForDOMNode = async function waitForDOMNode(e,t=document){e=e||{};const{type:n,value:o}=e;if(!n||!o)throw new Error("Must specify identifier");let s=o;switch(n){case"tag":s=o.toUpperCase()}if("check"!==n){const e=await i({type:"selector",value:s},[],t);if(e)return new Promise(t=>t(e))}async function i({type:e,value:t},n,o){let s;switch(e){case"tag":s=n.find(e=>e.tagName===t);break;case"selector":s=o.querySelector(t);break;case"check":for(const e of n){if(await t(e))return e}}return s}return new Promise((e,o)=>{const r=new MutationObserver(async o=>{for(const a of o)if("childList"===a.type){const o=Array.from(a.addedNodes),c=await i({type:n,value:s},o,t);if(c)return r.disconnect(),e(c)}});r.observe(t,{childList:!0,subtree:!0})})};
+  })();</script><script type="text/javascript" id="__tmpScript-377218350" data-added-by-two-seven="1">(function() {
+    
+  window.twoseven.reportError = function reportError(e,t,n){"string"==typeof n&&(n={message:n}),Object.assign(n,{error:{message:t.message,stack:t.stack}}),window.tsExtGetPostToParent()({name:name,tag:e,action:"report-error",json:n}),console.error(JSON.stringify(n.error))}
+;
+  })();</script><script type="text/javascript" id="__tmpScript-311482127" data-added-by-two-seven="1">(function() {
+    
+  window.twosevenHmsToSecondsOnly = function(str) {
+      var p = str.split(':'),
+          s = 0, m = 1;
+
+      while (p.length > 0) {
+          s += m * parseInt(p.pop(), 10);
+          m *= 60;
+      }
+
+      return s;
+  }
+;
+  })();</script><script type="text/javascript" id="__tmpScript-684574783" data-added-by-two-seven="1">(function() {
+    window.twosevenExtLog = function twosevenExtLog(e,o,c){o||(o=e,e=void 0);let n=c||"black";if(c)switch(c){case"success":n="Green";break;case"info":n="DodgerBlue";break;case"error":n="Red";break;case"warning":n="Orange";break;default:n=c}e?console.log("%c"+e+": "+o,`color:${n}`):console.log("%c"+o,`color:${n}`)};
+  })();</script><script type="text/javascript" id="__tmpScript-238042814" data-added-by-two-seven="1">(function() {
+    
+  document.twosevenGET = function(url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+        if (xmlhttp.status == 200) {
+          callback(null, xmlhttp.responseText);
+        } else {
+          callback('something else other than 200 was returned', '');
+        }
+      }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+  };
+;
+  })();</script><script type="text/javascript" id="__tmpScript-944123552" data-added-by-two-seven="1">(function() {
+    
+  window.triggerEvent = function(e,t,n,o=!1){let s;window.twosevenScriptsDiv&&n&&"object"==typeof n&&(console.warn(`WARNING: Attempting to send an object via event.detail from CS->Page does not work on Firefox: ${JSON.stringify(n)}`),console.error((new Error).stack)),s=o?n:{data:n};var i=new CustomEvent(t,{bubbles:!0,composed:!0,detail:s});e.dispatchEvent(i)}
+;
+  })();</script><script type="text/javascript" id="__tmpScript-532992395" data-added-by-two-seven="1">(function() {
+    window.twoseven.postTo = async function postTo(e,t,n=!1){let o;return t.name=t.name||name,o=n?new Promise(e=>{const n=`ack-${t.action}-${1e9*Math.random()|0}`;t.ack={event:n};window.debug&&["play","pause","currentTime"].some(e=>t.action.includes(e)),window.addEventListener("message",function t({data:o={}}){o.action===n&&(window.removeEventListener("message",t),e(o.json))})}):new Promise(e=>e()),e.postMessage(t,"*"),o};
+  })();</script><script type="text/javascript" id="__tmpScript-850470140" data-added-by-two-seven="1">(function() {
+    window.tsExtGetPostTo = function tsExtGetPostTo(){return window.twoseven&&window.twoseven.postTo||window.postTo};
+  })();</script><script type="text/javascript" id="__tmpScript-133538657" data-added-by-two-seven="1">(function() {
+    window.tsExtGetPostToParent = function tsExtGetPostToParent(){return window.twoseven&&window.twoseven.postToParent||window.postToParent};
+  })();</script><script type="text/javascript" id="__tmpScript-190067266" data-added-by-two-seven="1">(function() {
+    window.twoseven.postResponse = async function postResponse(e,t){const{source:n,data:{ack:{event:o}}}=e;window.tsExtGetPostTo()(n,{action:o,json:t})};
+  })();</script><script type="text/javascript" id="__tmpScript-230746407" data-added-by-two-seven="1">(function() {
+    window.twoseven.postToParent = async function postToParent(e,t=!1){return window.tsExtGetPostTo()(window.parent,e,t)};
+  })();</script><script type="text/javascript" id="__tmpScript-222357058" data-added-by-two-seven="1">(function() {
+    window.twoseven.postToTop = async function postToTop(e,t=!1){return window.tsExtGetPostTo()(window.top,e,t)};
+  })();</script><script type="text/javascript" id="__tmpScript-232682492" data-added-by-two-seven="1">(function() {
+    
+  window.twoseven.getFromStorage = e=>new Promise((t,n)=>{const o="get-from-storage-"+(1e9*Math.random()|0);window.addEventListener(o,e=>{window.removeEventListener(o,this);const{detail:{data:{value:n}}}=e;t(n)}),triggerEvent(window,"get-from-storage",{key:e,evt:o})})
+  window.twoseven.saveToStorage = e=>{triggerEvent(window,"save-to-storage",e)}
+;
+  })();</script><script type="text/javascript" id="__tmpScript-689545953" data-added-by-two-seven="1">(function() {
+    
+  function attachHistoryListeners(){var e=history.pushState;history.pushState=function(t,n,o){return"function"==typeof history.onpushstate&&history.onpushstate({state:t}),triggerEvent(window,"pushstate",{uri:o}),e.apply(history,arguments)};var t=history.replaceState;history.replaceState=function(e){return"function"==typeof history.onreplacestate&&history.onreplacestate({state:e}),t.apply(history,arguments)}}
+  attachHistoryListeners()
+;
+  })();</script><script type="text/javascript" id="__tmpScript-166127041" data-added-by-two-seven="1">(function() {
+    window.twoseven.once = function once(e,t,n){e.addEventListener(t,function o(s){e.removeEventListener(t,o),n(s)})};
+  })();</script><script type="text/javascript" id="__tmpScript-624387386" data-added-by-two-seven="1">(function() {
+    
+  window.twoseven.isOnTwoSevenTab = async () => {
+    const result = await window.twoseven.postTo(window, { action: 'is-on-twoseven-tab' }, true)
+    return result
+  }
+;
+  })();</script><script type="text/javascript" id="__tmpScript-495536898" data-added-by-two-seven="1">(function() {
+    
+  window.twoseven.isPaused = async () => {
+    const result = await window.twoseven.postTo(window, { action: 'twoseven:pause-state' }, true)
+    return result
+  }
+;
+  })();</script><script type="text/javascript" id="__tmpScript-387967647" data-added-by-two-seven="1">(function() {
+    
+      const modal = document.querySelector('.twoseven-ext-tab-media-modal')
+      const modalCloseBtn = modal.querySelector('.close')
+      function closeModal () {
+        modal.style.display = 'none'
+        const frame = document.querySelector('#twoseven-ext-tab-media-iframe').contentWindow
+        frame.postMessage({
+          __evt_name: 'modal-hide'
+        }, '*')
+      }
+      modalCloseBtn.onclick = closeModal
+
+      window.onmessage = function (e) {
+        if (e.data.__evt_name === 'modal-hide') {
+          closeModal()
+        }
+      }
+
+      window.twoseven.closeTabMediaModal = closeModal
+
+      window.onclick = function (e) {
+        if (e.target.id === 'twoseven-ext-tab-media-modal' && modal.style.display === 'block') {
+            closeModal()
+        }
+      }
+    ;
+  })();</script></div><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>How to Convert Temperature (K) to RGB: Algorithm and Sample Code | tannerhelland.com</title>
+<meta name="generator" content="Jekyll v3.8.5">
+<meta property="og:title" content="How to Convert Temperature (K) to RGB: Algorithm and Sample Code">
+<meta name="author" content="Tanner Helland">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="While working on a “Color Temperature” tool for PhotoDemon, I spent an evening trying to track down a simple, straightforward algorithm for converting between temperature (in Kelvin) and RGB values. This seemed like an easy algorithm to find, since many photo editors provide tools for correcting an image’s color temperature in post-production, and every modern camera - including smartphones - provides a way to adjust white balance based on the lighting conditions of a shot. Who knew that no one on the Internet had ever devised such a thing?">
+<meta property="og:description" content="While working on a “Color Temperature” tool for PhotoDemon, I spent an evening trying to track down a simple, straightforward algorithm for converting between temperature (in Kelvin) and RGB values. This seemed like an easy algorithm to find, since many photo editors provide tools for correcting an image’s color temperature in post-production, and every modern camera - including smartphones - provides a way to adjust white balance based on the lighting conditions of a shot. Who knew that no one on the Internet had ever devised such a thing?">
+<link rel="canonical" href="https://tannerhelland.com/2012/09/18/convert-temperature-rgb-algorithm-code.html">
+<meta property="og:url" content="https://tannerhelland.com/2012/09/18/convert-temperature-rgb-algorithm-code.html">
+<meta property="og:site_name" content="tannerhelland.com">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2012-09-18T02:58:56+00:00">
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"How to Convert Temperature (K) to RGB: Algorithm and Sample Code","dateModified":"2012-09-18T02:58:56+00:00","datePublished":"2012-09-18T02:58:56+00:00","url":"https://tannerhelland.com/2012/09/18/convert-temperature-rgb-algorithm-code.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://tannerhelland.com/2012/09/18/convert-temperature-rgb-algorithm-code.html"},"author":{"@type":"Person","name":"Tanner Helland"},"description":"While working on a “Color Temperature” tool for PhotoDemon, I spent an evening trying to track down a simple, straightforward algorithm for converting between temperature (in Kelvin) and RGB values. This seemed like an easy algorithm to find, since many photo editors provide tools for correcting an image’s color temperature in post-production, and every modern camera - including smartphones - provides a way to adjust white balance based on the lighting conditions of a shot. Who knew that no one on the Internet had ever devised such a thing?","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="./How to Convert Temperature (K) to RGB_ Algorithm and Sample Code _ tannerhelland.com_files/main.css">
+  <!--<base href="/">--><base href=".">
+  <link rel="icon" type="image/png" href="https://tannerhelland.com/favicon.png"><link type="application/atom+xml" rel="alternate" href="https://tannerhelland.com/feed.xml" title="tannerhelland.com"><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="./How to Convert Temperature (K) to RGB_ Algorithm and Sample Code _ tannerhelland.com_files/js"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-157453629-1');
+</script>
+
+<link href="chrome-extension://cjdnfmjmdligcpfcekfmenlhiopehjkd/web_resources/modal/modal.css" rel="stylesheet" id="__tmpStyle"></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="https://tannerhelland.com/">tannerhelland.com</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+              <a class="page-link" href="https://tannerhelland.com/about.html">About</a>
+             
+              <a class="page-link" href="https://tannerhelland.com/blog.html">Blog</a>
+             
+              <a class="page-link" href="https://tannerhelland.com/code.html">Code</a>
+             
+              <a class="page-link" href="https://tannerhelland.com/contact.html">Contact</a>
+             
+              <a class="page-link" href="https://tannerhelland.com/donate.html">Donate</a>
+             
+              <a class="page-link" href="https://tannerhelland.com/music.html">Music</a>
+             </div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope="" itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">How to Convert Temperature (K) to RGB: Algorithm and Sample Code</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2012-09-18T02:58:56+00:00" itemprop="datePublished">Sep 18, 2012
+      </time>
+	  
+      <!-- Look the author details up from the site config. -->
+      • by <a href="https://github.com/tannerhelland" target="_blank"><span itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">Tanner Helland</span></span></a>&nbsp;&nbsp;<img src="./How to Convert Temperature (K) to RGB_ Algorithm and Sample Code _ tannerhelland.com_files/tanner_h.png" srcset="media/authors/tanner_h.png 1x,media/authors/tanner_h_2x.png 2x" width="32" height="32"></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="converting-temperature-kelvin-to-rgb-an-overview">Converting temperature (Kelvin) to RGB: an overview</h2>
+
+<p>If you don’t know what “color temperature” is, <a href="http://en.wikipedia.org/wiki/Color_temperature">start here</a>.</p>
+
+<p>While working on a “Color Temperature” tool for <a href="https://photodemon.org/">PhotoDemon</a>, I spent an evening trying to track down a simple, straightforward algorithm for converting between temperature (in Kelvin) and RGB values.  This seemed like an easy algorithm to find, since many photo editors provide tools for correcting an image’s color temperature in post-production, and every modern camera - including smartphones - provides a way to adjust white balance based on the lighting conditions of a shot.</p>
+
+<p><img src="./How to Convert Temperature (K) to RGB_ Algorithm and Sample Code _ tannerhelland.com_files/camera_white_balance-300x235.jpg" alt=""></p>
+
+<p>Example of a camera white balance screen.  Image courtesy of <a href="http://digitalcamerareviews2011online.blogspot.com/2011/08/understanding-white-balance-setting-on.html">http://digitalcamerareviews2011online.blogspot.com</a></p>
+
+<p>Little did I know, but it’s pretty much impossible to find a reliable temperature to RGB conversion formula.  Granted, there are some algorithms out there, but most work by converting temperature to the XYZ color space, to which you could add your own RGB transformation after the fact.  Such algorithms seem to be based off AR Robertson’s method, one implementation of which is <a href="http://www.brucelindbloom.com/index.html?Eqn_XYZ_to_T.html">here</a>, while another is <a href="http://www.fourmilab.ch/documents/specrend/specrend.c">here</a>.</p>
+
+<p>Unfortunately, that approach isn’t really a mathematical formula - it’s just glorified look-up table interpolation.  That might be a reasonable solution under certain circumstances, but when you factor in the additional XYZ -&gt; RGB transformation required, it’s just too slow and overwrought for simple real-time color temperature adjustment.</p>
+
+<p>So I wrote my own algorithm, and it works pretty damn well.  Here’s how I did it.</p>
+
+<h2 id="caveats-for-using-this-algorithm">Caveats for using this algorithm</h2>
+
+<p><strong>Caveat 1</strong>: my algorithm provides a high-quality approximation, but it’s not accurate enough for serious scientific use.  It’s designed primarily for photo manipulation - so don’t try and use it for astronomy or medical imaging.</p>
+
+<p><strong>Caveat 2</strong>: due to its relative simplicity, this algorithm is fast enough to work in real-time on reasonably sized images (I tested it on 12 megapixel shots), but for best results you should apply mathematical optimizations specific to your programming language.  I’m presenting it here <em>without</em> math optimizations so as to not over-complicate it.</p>
+
+<p><strong>Caveat 3</strong>: this algorithm is only designed to be used between 1000 K and 40000 K, which is a nice spectrum for photography.  (Actually, it’s way larger than most photographic situations call for.)  While it will work for temperatures outside these ranges, estimation quality will decline.</p>
+
+<h2 id="special-thanks-to-mitchell-charity">Special thanks to Mitchell Charity</h2>
+
+<p>First off, I owe a big debt of gratitude to the source data I used to generate these algorithms - Mitchell Charity’s raw blackbody datafile at <a href="http://www.vendian.org/mncharity/dir3/blackbody/UnstableURLs/bbr_color.html">http://www.vendian.org/mncharity/dir3/blackbody/UnstableURLs/bbr_color.html</a>.  Charity provides two datasets, and my algorithm uses the <a href="http://cvrl.ioo.ucl.ac.uk/database/text/cmfs/ciexyz64.htm">CIE 1964 10-degree color matching function</a>.  A discussion of the CIE 1931 2-degree CMF with Judd Vos corrections versus the 1964 10-degree set is way beyond the scope of this article, but you can <a href="http://www.vendian.org/mncharity/dir3/blackbody/parameters.html">start here</a> for a more comprehensive analysis if you’re so inclined.</p>
+
+<h2 id="the-algorithm-sample-output">The Algorithm: sample output</h2>
+
+<p>Here’s the output of the algorithm from 1000 K to 40000 K:</p>
+
+<p><img src="./How to Convert Temperature (K) to RGB_ Algorithm and Sample Code _ tannerhelland.com_files/Temperature_to_RGB_1000_to_40000.png" alt=""></p>
+
+<p>The white point occurs at 6500-6600 K, which is perfect for photo manipulation purposes on a modern LCD monitor.</p>
+
+<p>Here’s a more detailed shot of the algorithm in the interesting photographic range, which is 1500 K to 15000 K:</p>
+
+<p><img src="./How to Convert Temperature (K) to RGB_ Algorithm and Sample Code _ tannerhelland.com_files/Temperature_to_RGB_1500_to_15000.png" alt=""></p>
+
+<p>As you can see, banding is minimal - which is a big improvement over the aforementioned look-up table methods.  The algorithm also does a great job of preserving the slightly yellow cast leading up to the white point, which is important for imitating daylight in post-production photo manipulation.</p>
+
+<h2 id="how-i-arrived-at-this-algorithm">How I arrived at this algorithm</h2>
+
+<p>My first step in reverse-engineering a reliable formula was to plot <a href="http://www.vendian.org/mncharity/dir3/blackbody/UnstableURLs/bbr_color.html">Charity’s original blackbody values</a>.  You can download my whole worksheet <a href="https://tannerhelland.com/files/Temperature_to_RGB_Worksheet.ods">here in LibreOffice / OpenOffice .ods format (430kb)</a>.</p>
+
+<p>Here’s how the data looks when plotted:</p>
+
+<p><img src="./How to Convert Temperature (K) to RGB_ Algorithm and Sample Code _ tannerhelland.com_files/Raw_temperature_vs_RGB_chart.png" alt=""></p>
+
+<p><em>Mitchell Charity’s original Temperature (K) to RGB (sRGB) data, plotted in LibreOffice Calc.  Again, these are based off the CIE 1964 10-degree CMFs.  The white point, as desired, occurs between 6500 K and 6600 K (the peak on the left-hand side of the chart). (Source: <a href="http://www.vendian.org/mncharity/dir3/blackbody/UnstableURLs/bbr_color.html">http://www.vendian.org/mncharity/dir3/blackbody/UnstableURLs/bbr_color.html</a>)</em></p>
+
+<p>From this, it’s easy to note that there are a few floors and ceilings that make our algorithm easier.  Specifically:</p>
+
+<ul>
+  <li>Red values below 6600 K are always 255</li>
+  <li>Blue values below 2000 K are always 0</li>
+  <li>Blue values above 6500 K are always 255</li>
+</ul>
+
+<p>It’s also important to note that for purposes of fitting a curve to the data, green is best treated as two separate curves - one for temperatures below 6600 K, and a separate one for temperatures above that point.</p>
+
+<p>From here, I separated the data (without the “always 0” and “always 255” segments) into individual color components.  In a perfect world, a curve could then be fitted to each set of points, but unfortunately it wasn’t that simple.  Because there’s a large disparity between the X and Y values in the plot - the x-values are all over 1000, and they are plotted in 100 point segments, while the y values all fall between 255 and 0 - it was necessary to transpose the x data in order to get a better fit.  For optimization purposes, I stuck to first dividing the x value (the temperature) by 100 across each color, followed by an additional subtraction if it led to a significantly better fit.  Here are the resultant charts for each curve, along with the best-fit curve and corresponding R-squared value:</p>
+
+<p><img src="./How to Convert Temperature (K) to RGB_ Algorithm and Sample Code _ tannerhelland.com_files/Modified_Temperature_to_Red_plot.png" alt=""></p>
+
+<p><img src="./How to Convert Temperature (K) to RGB_ Algorithm and Sample Code _ tannerhelland.com_files/Modified_Temperature_to_Green_plot.png" alt=""></p>
+
+<p><img src="./How to Convert Temperature (K) to RGB_ Algorithm and Sample Code _ tannerhelland.com_files/Modified_Temperature_to_Green_plot_2.png" alt=""></p>
+
+<p><img src="./How to Convert Temperature (K) to RGB_ Algorithm and Sample Code _ tannerhelland.com_files/Modified_Temperature_to_Blue_plot.png" alt=""></p>
+
+<p>Apologies for the horrifically poor font kerning and hinting in those charts.  I love LibreOffice for many things, but its inability to do font aliasing on charts is downright shameful.  I also don’t like having to extract charts from screenshots because they don’t have an export option, but that’s a rant best saved for some other day.</p>
+
+<p>As you can see, the curves all fit reasonably well, with R-square values above .987.  I could have spent more time really tweaking the curves, but for purposes of photo manipulation these are plenty close enough.  No layperson is going to be able to tell that the curves don’t exactly fit raw idealized blackbody observations, right?</p>
+
+<h2 id="the-algorithm">The algorithm</h2>
+
+<p>Using that data, here’s the algorithm, in all its glory.</p>
+
+<p>First, pseudocode:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Start with a temperature, in Kelvin, somewhere between 1000 and 40000.  (Other values may work,
+ but I can't make any promises about the quality of the algorithm's estimates above 40000 K.)
+Note also that the temperature and color variables need to be declared as floating-point.
+
+Set Temperature = Temperature \ 100
+
+Calculate Red:
+
+If Temperature &lt;= 66 Then
+	Red = 255
+Else
+	Red = Temperature - 60
+	Red = 329.698727446 * (Red ^ -0.1332047592)
+	If Red &lt; 0 Then Red = 0
+	If Red &gt; 255 Then Red = 255
+End If
+
+Calculate Green:
+
+If Temperature &lt;= 66 Then
+	Green = Temperature
+	Green = 99.4708025861 * Ln(Green) - 161.1195681661
+	If Green &lt; 0 Then Green = 0
+	If Green &gt; 255 Then Green = 255
+Else
+	Green = Temperature - 60
+	Green = 288.1221695283 * (Green ^ -0.0755148492)
+	If Green &lt; 0 Then Green = 0
+	If Green &gt; 255 Then Green = 255
+End If
+
+Calculate Blue:
+
+If Temperature &gt;= 66 Then
+	Blue = 255
+Else
+
+	If Temperature &lt;= 19 Then
+		Blue = 0
+	Else
+		Blue = Temperature - 10
+		Blue = 138.5177312231 * Ln(Blue) - 305.0447927307
+		If Blue &lt; 0 Then Blue = 0
+		If Blue &gt; 255 Then Blue = 255
+	End If
+
+End If
+</code></pre></div></div>
+
+<p>In the pseudocode above, note that <a href="http://en.wikipedia.org/wiki/Natural_logarithm">Ln() means natural logarithm</a>.  Note also that you can omit the “If color &lt; 0” checks if you will only ever supply temperatures in the recommended range.  (You still need to leave the “If color &gt; 255” checks, though.)</p>
+
+<p>As for actual code, here’s the exact Visual Basic function I’m using in <a href="https://photodemon.org/">PhotoDemon</a>.  It’s not yet optimized (for example, the logarithms would be much faster via look-up table) but at least the code is short and readable:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'Given a temperature (in Kelvin), estimate an RGB equivalent
+Private Sub getRGBfromTemperature(ByRef r As Long, ByRef g As Long, ByRef b As Long, ByVal tmpKelvin As Long)
+
+    Static tmpCalc As Double
+
+    'Temperature must fall between 1000 and 40000 degrees
+    If tmpKelvin &lt; 1000 Then tmpKelvin = 1000
+    If tmpKelvin &gt; 40000 Then tmpKelvin = 40000
+    
+    'All calculations require tmpKelvin \ 100, so only do the conversion once
+    tmpKelvin = tmpKelvin \ 100
+    
+    'Calculate each color in turn
+    
+    'First: red
+    If tmpKelvin &lt;= 66 Then
+        r = 255
+    Else
+        'Note: the R-squared value for this approximation is .988
+        tmpCalc = tmpKelvin - 60
+        tmpCalc = 329.698727446 * (tmpCalc ^ -0.1332047592)
+        r = tmpCalc
+        If r &lt; 0 Then r = 0
+        If r &gt; 255 Then r = 255
+    End If
+    
+    'Second: green
+    If tmpKelvin &lt;= 66 Then
+        'Note: the R-squared value for this approximation is .996
+        tmpCalc = tmpKelvin
+        tmpCalc = 99.4708025861 * Log(tmpCalc) - 161.1195681661
+        g = tmpCalc
+        If g &lt; 0 Then g = 0
+        If g &gt; 255 Then g = 255
+    Else
+        'Note: the R-squared value for this approximation is .987
+        tmpCalc = tmpKelvin - 60
+        tmpCalc = 288.1221695283 * (tmpCalc ^ -0.0755148492)
+        g = tmpCalc
+        If g &lt; 0 Then g = 0
+        If g &gt; 255 Then g = 255
+    End If
+    
+    'Third: blue
+    If tmpKelvin &gt;= 66 Then
+        b = 255
+    ElseIf tmpKelvin &lt;= 19 Then
+        b = 0
+    Else
+        'Note: the R-squared value for this approximation is .998
+        tmpCalc = tmpKelvin - 10
+        tmpCalc = 138.5177312231 * Log(tmpCalc) - 305.0447927307
+        
+        b = tmpCalc
+        If b &lt; 0 Then b = 0
+        If b &gt; 255 Then b = 255
+    End If
+    
+End Sub
+</code></pre></div></div>
+
+<p>This function was used to generate the sample output near the start of this article, so I can guarantee that it works.</p>
+
+<h2 id="sample-images">Sample images</h2>
+
+<p>Here’s a great example of what color temperature adjustments can do.  The image below – a promotional poster for the HBO series True Blood – nicely demonstrates the potential of color temperature adjustments. On the left is the original shot; on the right, a color temperature adjustment using the code above. In one click, a nighttime scene can been recast in daylight.</p>
+
+<p><img src="./How to Convert Temperature (K) to RGB_ Algorithm and Sample Code _ tannerhelland.com_files/True_Blood_Color_Temperature_Demo-600x450.jpg" alt=""></p>
+
+<p>The actual color temperature tool in <a href="https://photodemon.org/">PhotoDemon</a> looks like this:</p>
+
+<p><img src="./How to Convert Temperature (K) to RGB_ Algorithm and Sample Code _ tannerhelland.com_files/PhotoDemon_50_Color_Temperature_Tool.jpg" alt=""></p>
+
+<p>Download it <a href="https://photodemon.org/download">here</a> to see it in action.</p>
+
+<h2 id="addendum-october-2014">addendum October 2014</h2>
+
+<p><a href="https://twitter.com/renaudbedard">Renaud Bédard</a> has put together a great online demonstration of this algorithm.  <a href="https://www.shadertoy.com/view/lsSXW1">Check it out here</a>, and thanks to Renaud for sharing!</p>
+
+<h2 id="addendum-april-2015">addendum April 2015</h2>
+
+<p>Neil B has helpfully provided a better version of the original curve-fitting functions, which results in slightly modified temperature coefficients.  <a href="http://www.zombieprototypes.com/?p=210">His excellent article</a> describes the changes in detail.</p>
+
+<h2 id="addendum-january-2020">addendum January 2020</h2>
+
+<p>David has ported this code to Swift.  <a href="https://github.com/davidf2281/ColorTempToRGB">His work is available on GitHub</a>.</p>
+
+<p>Tom Yaxley has <a href="http://tommitytom.co.uk/colourtemp/">ported it to javascript</a>.</p>
+
+<p>Christophe Carpentier has <a href="https://github.com/Saucistophe/libs/blob/master/global-lib/src/main/java/org/saucistophe/utils/ColorUtils.java">ported it to Java</a>.</p>
+
+<p>Mike D Sutton has <a href="https://gist.github.com/EDais/1ba1be0fe04eca66bbd588a6c9cbd666">ported it to node.js</a>.</p>
+
+<p>Robert Atkinson has <a href="https://github.com/rgatkinson/ParticleDmxNeopixel/tree/master/ColorTemperature">re-fit the data using Mathematica</a> (which offers much more powerful fitting features than LibreOffice, obviously!).</p>
+
+  </div><a class="u-url" href="https://tannerhelland.com/2012/09/18/convert-temperature-rgb-algorithm-code.html" hidden=""></a>
+</article>
+
+      </div>
+    </main><div class="wrapper">
+  <p>Got a comment, question, or other feedback on this page?  <a href="https://github.com/tannerhelland/tannerhelland-dot-com/issues">Submit an issue at GitHub</a>.</p>
+</div>
+  
+<footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+  
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            ©2020 Tanner Helland<br>
+			Text and images are <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+        </li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li> <a href="https://github.com/tannerhelland"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg><span class="username">tannerhelland</span></a></li><li><a href="https://tannerhelland.com/feed.xml"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#rss"></use></svg> <span>get updates</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Find this content useful? <a href="https://www.patreon.com/photodemon">Support me on Patreon,</a> or consider making <a href="https://tannerhelland.com/donate/">a one-time donation.</a></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+<div>
+    <div id="twoseven-ext-tab-media-modal" class="twoseven-ext-tab-media-modal" style="display: none;">
+      <!-- Modal content -->
+      <div class="twoseven-ext-tab-media-modal-content">
+        <div class="iframe-container" style="height: 100%; width: 100%;">
+          <span class="close">×</span>
+        </div>
+      </div>
+    </div></div></body></html>
