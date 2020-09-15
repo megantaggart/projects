@@ -50,15 +50,56 @@ module case( in_l, in_w, in_d, thickness )
     screw_top_r = 3 /2;
     
     hpw = pillar_width /2;
+    t = thickness;
+    ht = t/2;
     // Main box
     difference ()
     {
         union()
         {
-            translate ( [ -thickness,-thickness,-thickness ] )
-            {
-                cube ([in_l+2*thickness, in_w+2*thickness, in_d + thickness ], false);   
-            };
+            translate ( [ -ht,-ht,-thickness ] )
+                cube ([in_l+thickness, in_w+thickness, in_d + thickness ], false);   
+            
+            translate ( [ -t,-ht,-thickness ] )
+                cube ([ht, in_w+t, in_d + thickness], false);   
+            translate ( [ in_l+ht,-ht,-thickness ] )
+                cube ([ht, in_w+t, in_d + thickness], false);   
+            translate ( [ -ht,-t,-thickness ] )
+                cube ([in_l+t, ht, in_d + thickness], false);   
+            translate ( [ -ht,in_w+ht,-thickness ] )
+                cube ([in_l+t, ht, in_d + thickness], false);   
+            
+            translate ( [ -t,-t,-thickness ] )
+                intersection ()
+                {
+                    cube ([t, t, in_d + thickness], false);   
+                    translate ( [ ht,ht,0 ] )
+                        cylinder ( in_d + thickness, ht,ht);
+                }
+
+            translate ( [ in_l,-t,-thickness ] )
+                intersection ()
+                {
+                    cube ([t, t, in_d + thickness], false);   
+                    translate ( [ ht,ht,0 ] )
+                        cylinder ( in_d + thickness, ht,ht);
+                }
+
+            translate ( [ -t,in_w,-thickness ] )
+                intersection ()
+                {
+                    cube ([t, t, in_d + thickness], false);   
+                    translate ( [ ht,ht,0 ] )
+                        cylinder ( in_d + thickness, ht,ht);
+                }
+
+            translate ( [ in_l,in_w,-thickness ] )
+                intersection ()
+                {
+                    cube ([t, t, in_d + thickness], false);   
+                    translate ( [ ht,ht,0 ] )
+                        cylinder ( in_d + thickness, ht,ht);
+                }
         };
         union()
         {
@@ -112,6 +153,7 @@ lcd_y_pos = 15;
 difference ()
 {
     case ( case_length_inside, case_width_inside, case_depth_inside, case_wall_thickness );
+    // LCD cutout
     translate ([ lcd_x_pos,lcd_y_pos, -case_wall_thickness])
         cube ([lcd_opening_width,lcd_opening_height,case_wall_thickness],false);
 }
