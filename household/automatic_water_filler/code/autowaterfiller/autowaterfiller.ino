@@ -49,28 +49,39 @@ unsigned long lcd_update_time = 500;
 const unsigned long lcd_lightup_time = 10000;
 unsigned long lcd_light_on_time = 0;
 
-int num_fills = 0;
 char message_top[17];
 char message_bot[17];
+const int eeprom_address = 0x10;
 
 void read_total_from_eeprom()
 {
-  total_ml_filled =  (unsigned long )EEPROM.read(3);
-  total_ml_filled <= 8;
-  total_ml_filled += (unsigned long )EEPROM.read(2);
-  total_ml_filled <= 8;
-  total_ml_filled += (unsigned long )EEPROM.read(1);
-  total_ml_filled <= 8;
-  total_ml_filled += (unsigned long )EEPROM.read(0);
+  byte b;
+  b = EEPROM.read(eeprom_address+3);
+  total_ml_filled =  b;
+  total_ml_filled = total_ml_filled << 8;
+  b = EEPROM.read(eeprom_address+2);
+  total_ml_filled +=  b;
+  total_ml_filled = total_ml_filled << 8;
+  b = EEPROM.read(eeprom_address+1);
+  total_ml_filled +=  b;
+  total_ml_filled = total_ml_filled << 8;
+  b = EEPROM.read(eeprom_address+0);
+  total_ml_filled +=  b;
 }
 
 void write_total_to_eeprom()
 {
-  EEPROM.write(0, total_ml_filled & 0xff ); 
-  EEPROM.write(1, ( total_ml_filled & 0xff00 ) >> 8 ); 
-  EEPROM.write(2, ( total_ml_filled & 0xff0000 ) >> 16 ); 
-  EEPROM.write(3, ( total_ml_filled & 0xff000000 ) >> 24 ); 
+  byte b;
+  b = (byte) ( total_ml_filled & 0x000000FF );
+  EEPROM.write(eeprom_address, b);
+  b = (byte) ((total_ml_filled & 0x0000FF00 ) >> 8 );
+  EEPROM.write(eeprom_address+1, b);
+  b = (byte) ((total_ml_filled & 0x00FF0000 ) >> 8 );
+  EEPROM.write(eeprom_address+2, b);
+  b = (byte) ((total_ml_filled & 0xFF000000 ) >> 8 );
+  EEPROM.write(eeprom_address+3, b);
 }
+
 void setup()
 { 
   // Set up digital pins
@@ -92,12 +103,14 @@ void setup()
 
 void check_power_supply()
 {
-  const int supply_limit = 450;
+  const int supply_limit = 525;
   int supply = analogRead(voltage_monitor_pin);
   if ( supply < supply_limit )
   {
+    digitalWrite (lcd_backlight_pin, 0);
     // Supply is about to disappear, write value to eeprom
     write_total_to_eeprom();
+    delay(100000);
   }
 }
 
@@ -154,18 +167,12 @@ void handle_water_control()
         unsigned long now = millis();
         valve_open_duration = now - valve_open_time;
         total_ml_filled = total_ml_filled + ( valve_open_duration / MS_TO_ML );
-        if ( num_fills > 20 )
-        {
-          num_fills = 0;
-          write_total_to_eeprom();
-        }
       }
       else
       {
         digitalWrite (sonenoid_valve_pin, 1);
         valve_open_time = millis();
         unsigned long valve_open_duration = 0;
-        num_fills++;
       }
     }
   }
@@ -213,11 +220,11 @@ void update_display()
     int mills = total_ml_filled - ( litres * 1000 );
     sprintf(message_bot, "%10d.%03d l", litres, mills);
   }
-  
   lcd.setCursor(0,0);
   lcd.print(message_top);
   lcd.setCursor(0,1);
   lcd.print(message_bot);
+  
 }
 
 void loop() 
