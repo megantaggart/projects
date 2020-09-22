@@ -9,7 +9,7 @@
 $fn = 128;
 wall_thickness = 3;
 head_inside_outer_diameter  = 88;
-head_inside_inner_diameter  = 78;
+head_inside_inner_diameter  = 65;
 head_depth = 10;
 
 head_inside_outer_r = head_inside_outer_diameter / 2;
