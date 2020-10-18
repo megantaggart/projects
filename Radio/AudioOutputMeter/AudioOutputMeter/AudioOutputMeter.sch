@@ -1,0 +1,252 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr User 5197 4016
+encoding utf-8
+Sheet 1 1
+Title "Audio output meter"
+Date "2020-10-18"
+Rev "1.0"
+Comp "MegansProjects"
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Connector:Conn_01x01_Male J1
+U 1 1 5F8CB790
+P 1050 1000
+F 0 "J1" H 1158 1181 50  0000 C CNN
+F 1 " " H 1158 1090 50  0000 C CNN
+F 2 "" H 1050 1000 50  0001 C CNN
+F 3 "~" H 1050 1000 50  0001 C CNN
+	1    1050 1000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Conn_01x01_Male J2
+U 1 1 5F8CC65C
+P 1050 2150
+F 0 "J2" H 1158 2331 50  0000 C CNN
+F 1 " " H 1158 2240 50  0000 C CNN
+F 2 "" H 1050 2150 50  0001 C CNN
+F 3 "~" H 1050 2150 50  0001 C CNN
+	1    1050 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C1
+U 1 1 5F8CD169
+P 1950 1000
+F 0 "C1" V 1800 1000 50  0000 C CNN
+F 1 "10uF" V 2150 1000 50  0000 C CNN
+F 2 "" H 1988 850 50  0001 C CNN
+F 3 "~" H 1950 1000 50  0001 C CNN
+	1    1950 1000
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:CP C2
+U 1 1 5F8CE466
+P 2900 1550
+F 0 "C2" H 3018 1596 50  0000 L CNN
+F 1 "1uF" H 3018 1505 50  0000 L CNN
+F 2 "" H 2938 1400 50  0001 C CNN
+F 3 "~" H 2900 1550 50  0001 C CNN
+	1    2900 1550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:D D2
+U 1 1 5F8CF1DF
+P 2550 1000
+F 0 "D2" H 2550 783 50  0000 C CNN
+F 1 "1N5818" H 2550 874 50  0000 C CNN
+F 2 "" H 2550 1000 50  0001 C CNN
+F 3 "~" H 2550 1000 50  0001 C CNN
+	1    2550 1000
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:D D1
+U 1 1 5F8CFD8E
+P 2200 1550
+F 0 "D1" V 2154 1630 50  0000 L CNN
+F 1 "1N5818" V 2245 1630 50  0000 L CNN
+F 2 "" H 2200 1550 50  0001 C CNN
+F 3 "~" H 2200 1550 50  0001 C CNN
+	1    2200 1550
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R1
+U 1 1 5F8D1990
+P 1400 1750
+F 0 "R1" H 1150 1800 50  0000 L CNN
+F 1 "10R 2W" H 1050 1700 50  0000 L CNN
+F 2 "" V 1330 1750 50  0001 C CNN
+F 3 "~" H 1400 1750 50  0001 C CNN
+	1    1400 1750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R2
+U 1 1 5F8D2632
+P 1700 1750
+F 0 "R2" H 1850 1800 50  0000 L CNN
+F 1 "10R 2W" H 1750 1700 50  0000 L CNN
+F 2 "" V 1630 1750 50  0001 C CNN
+F 3 "~" H 1700 1750 50  0001 C CNN
+	1    1700 1750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R3
+U 1 1 5F8D3058
+P 4200 1250
+F 0 "R3" H 4270 1296 50  0000 L CNN
+F 1 "6k8" H 4270 1205 50  0000 L CNN
+F 2 "" V 4130 1250 50  0001 C CNN
+F 3 "~" H 4200 1250 50  0001 C CNN
+	1    4200 1250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:Amperemeter_DC M1
+U 1 1 5F8D3366
+P 4200 1700
+F 0 "M1" H 4353 1746 50  0000 L CNN
+F 1 "100 uA" H 4353 1655 50  0000 L CNN
+F 2 "" V 4200 1800 50  0001 C CNN
+F 3 "~" V 4200 1800 50  0001 C CNN
+	1    4200 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_SPST SW1
+U 1 1 5F8D41A4
+P 1550 1300
+F 0 "SW1" V 1550 1400 50  0000 L CNN
+F 1 " " V 1595 1398 50  0000 L CNN
+F 2 "" H 1550 1300 50  0001 C CNN
+F 3 "~" H 1550 1300 50  0001 C CNN
+	1    1550 1300
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_POT RV1
+U 1 1 5F8D4B9D
+P 3400 1000
+F 0 "RV1" V 3285 1000 50  0000 C CNN
+F 1 "100k" V 3194 1000 50  0000 C CNN
+F 2 "" H 3400 1000 50  0001 C CNN
+F 3 "~" H 3400 1000 50  0001 C CNN
+	1    3400 1000
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	1250 1000 1550 1000
+Wire Wire Line
+	2100 1000 2200 1000
+Wire Wire Line
+	2700 1000 2900 1000
+Wire Wire Line
+	3550 1000 3600 1000
+Wire Wire Line
+	4200 1000 4200 1100
+Wire Wire Line
+	4200 1400 4200 1500
+Wire Wire Line
+	1250 2150 1550 2150
+Wire Wire Line
+	4200 2150 4200 1900
+Wire Wire Line
+	1550 1100 1550 1000
+Connection ~ 1550 1000
+Wire Wire Line
+	1550 1000 1800 1000
+Wire Wire Line
+	1550 1500 1400 1500
+Wire Wire Line
+	1400 1500 1400 1600
+Wire Wire Line
+	1400 1900 1400 1950
+Wire Wire Line
+	1400 1950 1550 1950
+Wire Wire Line
+	1550 1950 1550 2150
+Connection ~ 1550 2150
+Wire Wire Line
+	1550 2150 2200 2150
+Wire Wire Line
+	1550 1500 1700 1500
+Wire Wire Line
+	1700 1500 1700 1600
+Connection ~ 1550 1500
+Wire Wire Line
+	1550 1950 1700 1950
+Wire Wire Line
+	1700 1950 1700 1900
+Connection ~ 1550 1950
+Wire Wire Line
+	2200 1400 2200 1000
+Connection ~ 2200 1000
+Wire Wire Line
+	2200 1000 2400 1000
+Wire Wire Line
+	2200 1700 2200 2150
+Connection ~ 2200 2150
+Wire Wire Line
+	2200 2150 2900 2150
+Wire Wire Line
+	2900 1400 2900 1000
+Connection ~ 2900 1000
+Wire Wire Line
+	2900 1000 3250 1000
+Wire Wire Line
+	2900 1700 2900 2150
+Connection ~ 2900 2150
+Wire Wire Line
+	2900 2150 3800 2150
+Connection ~ 3800 1000
+Wire Wire Line
+	3800 1000 4200 1000
+Wire Wire Line
+	3800 1400 3800 1000
+$Comp
+L Device:D D3
+U 1 1 5F8D0C49
+P 3800 1550
+F 0 "D3" V 3850 1800 50  0000 R CNN
+F 1 "1N4001" V 3750 1900 50  0000 R CNN
+F 2 "" H 3800 1550 50  0001 C CNN
+F 3 "~" H 3800 1550 50  0001 C CNN
+	1    3800 1550
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3800 1700 3800 2150
+Connection ~ 3800 2150
+Wire Wire Line
+	3800 2150 4200 2150
+Wire Wire Line
+	3400 850  3400 800 
+Wire Wire Line
+	3400 800  3600 800 
+Wire Wire Line
+	3600 800  3600 1000
+Connection ~ 3600 1000
+Wire Wire Line
+	3600 1000 3800 1000
+Text Label 3350 700  0    50   ~ 0
+GAIN
+Text Label 750  1000 0    50   ~ 0
+INPUT
+Text Label 750  2150 0    50   ~ 0
+INPUT
+Text Label 1200 1250 0    50   ~ 0
+DUMMY
+Text Label 1250 1350 0    50   ~ 0
+LOAD
+$EndSCHEMATC
